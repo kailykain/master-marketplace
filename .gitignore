@@ -53,3 +53,6 @@
 
 # VSCode settings
 /.vscode
+
+/.env
+/localphp

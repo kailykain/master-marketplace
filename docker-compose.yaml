@@ -1,0 +1,51 @@
+name: mmp
+
+services:
+  php85:
+    build:
+      context: ./docker/php
+      args:
+        VERSION: 8.5
+      dockerfile: Dockerfile
+      target: php_dev
+    image: mmp_php:8.5-dev
+    container_name: mmp_php
+    ports:
+      - "9185:9000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/app
+      - ./docker/php/conf/dev.ini:/usr/local/etc/php/conf.d/dev.ini:ro
+    environment:
+      DATABASE_URL: "${DATABASE_URL}"
+    networks:
+      - mmpnet
+    depends_on:
+      - postgre18
+  postgre18:
+    build: 
+      context: ./docker/pgsql
+    image: mmp_pgsql:18.4
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    networks:
+      mmpnet:
+        ipv4_address: 172.28.0.3
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgre18_data:/var/lib/postgresql
+volumes:
+  postgre18_data:
+
+networks:
+  mmpnet:
+    driver: bridge
+    enable_ipv6: false
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24  # Свободная подсеть, не конфликтует с default bridge Docker
+

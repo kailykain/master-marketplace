@@ -1,6 +1,6 @@
 # Cache, session files and logs (Symfony3)
 /var/
-
+/docker/secrets/
 # Managed by Composer
 /vendor/
 

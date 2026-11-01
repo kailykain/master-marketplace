@@ -18,7 +18,9 @@ services:
       - .:/app
       - ./docker/php/conf/dev.ini:/usr/local/etc/php/conf.d/dev.ini:ro
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
     networks:
       - mmpnet
     depends_on:
@@ -30,7 +32,9 @@ services:
     environment:
       POSTGRES_DB: "${DB_NAME}"
       POSTGRES_USER: "${DB_USER}"
-      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
     networks:
       mmpnet:
         ipv4_address: 172.28.0.3
@@ -40,6 +44,10 @@ services:
       - postgre18_data:/var/lib/postgresql
 volumes:
   postgre18_data:
+
+secrets:
+  db_password:
+    file: ./docker/secrets/db_password
 
 networks:
   mmpnet:

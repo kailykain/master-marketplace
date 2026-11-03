@@ -21,6 +21,7 @@
 /config/secrets/prod/prod.decrypt.private.php
 
 /localphp
+/plan
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/

@@ -20,8 +20,6 @@
 
 /config/secrets/prod/prod.decrypt.private.php
 
-/localphp
-/plan
 ###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
@@ -31,3 +29,8 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###

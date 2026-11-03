@@ -1,0 +1,13 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - var
+        - src/Kernel.php
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+        # Если конфиги сервисов на PHP (Symfony 5.3+), раскомментируйте:
+        # scanDirectories:
+        #     - var/cache/dev/Symfony/Config

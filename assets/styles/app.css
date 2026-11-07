@@ -5,7 +5,3 @@
     --color-accent: oklch(70% 0.18 150);
     --font-sans: "Inter", system-ui, sans-serif;
 }
-
-body {
-    background-color: skyblue;
-}

@@ -59,6 +59,24 @@ Three specifics worth spelling out, because they are easy to get wrong:
 - Use `symfony/lock` (`LockFactory`) for mutual exclusion. A hand-built flag or
   lock file looks fine in review and is usually wrong under concurrency.
 
+## Frontend: Tailwind 4 + Twig components
+
+- Верстаем на **Tailwind CSS 4** (подключается через AssetMapper: `@import "tailwindcss";`
+  в `assets/styles/app.css`, конфигурация — через CSS-директивы, не через `tailwind.config.js`).
+- **Цвета — только из `@theme`.** Все цвета проекта объявляются в блоке `@theme { ... }`
+  (`assets/styles/app.css`) как design-токены (`--color-*`). В разметке и компонентах
+  используем только эти токены (`bg-surface`, `text-muted`, ...). Запрещены произвольные
+  значения цветов в классах (`bg-[#1a2b3c]`, `text-gray-500` вне темы) и «сырые» hex
+  в шаблонах.
+- **Компоненты карточек — через `{% include %} with ... only`.** Переиспользуемая
+  разметка карточек выносится в отдельные партиалы
+  (например, `templates/components/card.html.twig`) и подключается с явным набором
+  переменных и `only`, чтобы партиал не тянул весь контекст:
+
+  ```twig
+  {% include 'components/card.html.twig' with { title: item.title, url: item.url, image: item.image } only %}
+  ```
+
 ## Everyday workflow
 
 - Run the app with `symfony serve -d`, and commands with `symfony console ...`

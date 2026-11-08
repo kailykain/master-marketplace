@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-    --color-brand: oklch(60% 0.2 260);
-    --color-accent: oklch(70% 0.18 150);
     --font-sans: "Inter", system-ui, sans-serif;
+
+    /* Брендовые цвета */
+    --color-brand: oklch(52% 0.19 262);
+    --color-brand-dark: oklch(42% 0.19 262);
+    --color-brand-light: oklch(95% 0.03 262);
+    --color-accent: oklch(68% 0.16 55);
+
+    /* Нейтральные цвета интерфейса */
+    --color-ink: oklch(24% 0.02 262);
+    --color-muted: oklch(48% 0.02 262);
+    --color-surface: oklch(100% 0 0);
+    --color-surface-alt: oklch(96.5% 0.008 262);
+    --color-border: oklch(90% 0.01 262);
+    --color-success: oklch(58% 0.14 155);
+
+    /* Контейнер страницы */
+    --container-page: 80rem;
 }

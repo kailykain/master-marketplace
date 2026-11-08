@@ -1,16 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{% block meta_description %}Платформа экспертных услуг: консультации, обучение и экспертные услуги от проверенных экспертов и организаций. Безопасная сделка и поддержка на каждом шаге.{% endblock %}">
+        <title>{% block title %}Платформа экспертных услуг{% endblock %}</title>
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
+
         {% block stylesheets %}{% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body class="flex min-h-screen flex-col bg-surface font-sans text-ink">
+        {% block header %}
+            <header class="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur">
+                <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-4 py-3 md:px-6">
+                    {# Логотип #}
+                    <a href="{{ path('homepage') }}" class="flex min-h-11 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand" aria-label="Платформа экспертных услуг — на главную">
+                        <span class="grid size-9 place-items-center rounded-xl bg-brand text-surface" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                            </svg>
+                        </span>
+                        <span class="text-lg font-bold tracking-tight">Эксперт<span class="text-brand">Про</span></span>
+                    </a>
+
+                    {# Меню (десктоп) #}
+                    <nav class="hidden md:block" aria-label="Основная навигация">
+                        <ul class="flex items-center gap-1">
+                            <li><a href="#" class="rounded-lg px-3 py-2 font-medium text-muted transition hover:bg-surface-alt hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Услуги</a></li>
+                            <li><a href="#" class="rounded-lg px-3 py-2 font-medium text-muted transition hover:bg-surface-alt hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Эксперты</a></li>
+                            <li><a href="#" class="rounded-lg px-3 py-2 font-medium text-muted transition hover:bg-surface-alt hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Мероприятия</a></li>
+                            <li><a href="#" class="rounded-lg px-3 py-2 font-medium text-muted transition hover:bg-surface-alt hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Новости</a></li>
+                        </ul>
+                    </nav>
+
+                    {# Блок пользователя (десктоп) #}
+                    <div class="hidden items-center gap-2 md:flex">
+                        <a href="#" class="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2 font-semibold text-brand transition hover:bg-brand-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:bg-brand-light">Вход</a>
+                        <a href="#" class="inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-4 py-2 font-semibold text-surface transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand active:bg-brand-dark">Регистрация</a>
+                    </div>
+
+                    {# Burger-меню (мобильные) #}
+                    <details class="group relative md:hidden" data-controller="mobile-menu">
+                        <summary class="grid size-11 cursor-pointer list-none place-items-center rounded-xl text-ink transition hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand [&::-webkit-details-marker]:hidden" aria-label="Открыть меню">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="size-6 group-open:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                                <path d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="hidden size-6 group-open:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                                <path d="M6 6l12 12M18 6L6 18"/>
+                            </svg>
+                        </summary>
+                        <nav class="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-border bg-surface p-2 shadow-xl" aria-label="Мобильная навигация">
+                            <ul class="flex flex-col">
+                                <li><a href="#" class="block rounded-lg px-3 py-3 font-medium text-ink transition hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Услуги</a></li>
+                                <li><a href="#" class="block rounded-lg px-3 py-3 font-medium text-ink transition hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Эксперты</a></li>
+                                <li><a href="#" class="block rounded-lg px-3 py-3 font-medium text-ink transition hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Мероприятия</a></li>
+                                <li><a href="#" class="block rounded-lg px-3 py-3 font-medium text-ink transition hover:bg-surface-alt focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Новости</a></li>
+                            </ul>
+                            <div class="mt-2 flex flex-col gap-2 border-t border-border pt-2">
+                                <a href="#" class="inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2 font-semibold text-brand transition hover:bg-brand-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Вход</a>
+                                <a href="#" class="inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-4 py-2 font-semibold text-surface transition hover:bg-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">Регистрация</a>
+                            </div>
+                        </nav>
+                    </details>
+                </div>
+            </header>
+        {% endblock %}
+
+        <main class="flex-1">
+            {% block body %}{% endblock %}
+        </main>
+
+        {% block footer %}
+            <footer class="mt-16 bg-ink text-surface">
+                <div class="mx-auto grid max-w-page gap-10 px-4 py-12 md:grid-cols-2 md:px-6 lg:grid-cols-4">
+                    {# Логотип #}
+                    <div>
+                        <a href="{{ path('homepage') }}" class="inline-flex min-h-11 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface" aria-label="Платформа экспертных услуг — на главную">
+                            <span class="grid size-9 place-items-center rounded-xl bg-brand text-surface" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                </svg>
+                            </span>
+                            <span class="text-lg font-bold tracking-tight">Эксперт<span class="text-accent">Про</span></span>
+                        </a>
+                        <p class="mt-4 max-w-xs text-sm text-surface/70 text-balance">
+                            Маркетплейс услуг проверенных экспертов и экспертных организаций.
+                        </p>
+                    </div>
+
+                    {# Меню: разделы #}
+                    <nav aria-label="Разделы сайта">
+                        <h3 class="text-sm font-semibold uppercase tracking-wider text-surface/60">Разделы</h3>
+                        <ul class="mt-4 flex flex-col gap-2">
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Услуги</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Эксперты</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Мероприятия</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Новости</a></li>
+                        </ul>
+                    </nav>
+
+                    {# Меню: платформа #}
+                    <nav aria-label="О платформе">
+                        <h3 class="text-sm font-semibold uppercase tracking-wider text-surface/60">Платформа</h3>
+                        <ul class="mt-4 flex flex-col gap-2">
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">О платформе</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Стать экспертом</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Безопасная сделка</a></li>
+                            <li><a href="#" class="inline-flex min-h-11 items-center rounded-lg text-sm text-surface/80 transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Помощь</a></li>
+                        </ul>
+                    </nav>
+
+                    {# Контакты #}
+                    <div>
+                        <h3 class="text-sm font-semibold uppercase tracking-wider text-surface/60">Контакты</h3>
+                        <ul class="mt-4 flex flex-col gap-2 text-sm text-surface/80">
+                            <li><a href="tel:+78000000000" class="inline-flex min-h-11 items-center rounded-lg transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">8 (800) 000-00-00</a></li>
+                            <li><a href="mailto:info@expertpro.ru" class="inline-flex min-h-11 items-center rounded-lg transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">info@expertpro.ru</a></li>
+                            <li>Москва, ул. Примерная, д. 1</li>
+                            <li>Пн–Пт: 9:00–18:00</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-surface/10">
+                    <div class="mx-auto flex max-w-page flex-col items-center justify-between gap-2 px-4 py-5 text-sm text-surface/60 md:flex-row md:px-6">
+                        <p>© {{ 'now'|date('Y') }} ЭкспертПро. Все права защищены.</p>
+                        <a href="#" class="inline-flex min-h-11 items-center rounded-lg transition hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface">Политика конфиденциальности</a>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
     </body>
 </html>

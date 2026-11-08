@@ -76,9 +76,65 @@ Three specifics worth spelling out, because they are easy to get wrong:
   ```twig
   {% include 'components/card.html.twig' with { title: item.title, url: item.url, image: item.image } only %}
   ```
+- Токены для тёмной темы (если она планируется): цвета объявляем сразу парами
+  через `@theme` + CSS-переменные, чтобы позже включить `dark:` без переписывания
+  шаблонов.
+
+## Frontend: адаптивная вёрстка
+
+- **Mobile-first.** Базовые классы пишем для мобильного вида, наращиваем через
+  брейкпоинты (`sm:` → `md:` → `lg:` → `xl:`). Используем только стандартные
+  брейкпоинты Tailwind (sm 640 / md 768 / lg 1024 / xl 1280); произвольные
+  (`min-[420px]:`) — только если стандартный не решает задачу, и с комментарием.
+- **Семантика и a11y.** Вёрстка на семантических тегах (`header`, `nav`, `main`,
+  `section`, `article`, `footer`). Каждая страница — один `<h1>`. Картинки — с
+  `alt` и осмысленными `loading="lazy"` / `decoding="async"` (кроме first-screen).
+  Интерактивные элементы — настоящие `<button>`/`<a>`, не `<div onclick>`.
+  Видимые `focus-visible` стили для всего интерактивного.
+- **Контейнер и сетка.** Один общий контейнер `mx-auto max-w-<токен> px-4 md:px-6`
+  (переменная выносится в `@theme`, например `--spacing-page`). Сетки — `grid`
+  с `gap-*` и адаптивным числом колонок (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`),
+  не вложенные флексы с ручными ширинами.
+- **Никаких горизонтальных скроллов.** Не задавать фиксированные ширины/высоты
+  контентным блокам; длинные слова — `break-words`, переполнение — `truncate`
+  или `line-clamp-*`. Текст — `text-balance`, заголовки — `text-pretty`.
+- **Типографика и отступы** — только из шкалы Tailwind (`text-*`, `p-*`, `gap-*`).
+  Произвольные значения (`p-[13px]`) запрещены; если значение нужно часто —
+  добавляем токен в `@theme` в `assets/styles/app.css`, а не хардкодим.
+- **Тач-цели.** Кликабельные элементы на мобильных ≥ 44×44 px (учитывать
+  `p-*` вокруг иконок). `hover:`-эффекты — только как дополнение к `active:`/
+  `focus-visible:`, не как единственная индикация.
+- **Изображения.** Декоративные фоны — `aspect-*` + `object-cover`; контентные —
+  через `<picture>`/`srcset`, когда есть разные размеры. Никаких
+  `background-image` для контентных картинок.
+- **Мобильная навигация.** Burger-меню делаем рабочим (Stimulus-контроллер или
+  `<details>`), а не просто `hidden md:flex` без замены. Header — `sticky`,
+  mobile-меню закрывается по Escape и клику вне.
+- **База страницы.** `templates/base.html.twig` содержит `meta viewport`,
+  `meta description`, favicon и пустые блоки `title`/`meta`/`content`; новые
+  страницы наследуют её, а не создают свой `<html>`.
+- **Самопроверка вёрстки.** После вёрстки страницы: `bin/console lint:twig`,
+  затем проверить скриншоты через браузер минимум в двух вьюпортах —
+  1280×800 (desktop) и 375×667 (mobile) — и убедиться, что нет переполнений,
+  наложений и «прыгающих» элементов. Скриншоты — ключевой критерий готовности,
+  «локально вроде ок» без проверки на мобильном вьюпорте не считается готовым.
+- **Состояния.** Для списков/карточек предусмотреть empty-state (что видно, если
+  данных нет) и, где уместно, skeleton/loading-состояние — даже если данные пока
+  статичные.
 
 ## Everyday workflow
 
+- **Сервер разработки.** Проект доступен по адресу **https://mastermp.loc/** —
+  работает через nginx, конфигурация сайта лежит в
+  `/server_data/nginx/config/mastermp.conf`. Не поднимать свой встроенный
+  сервер для проверки — открывать готовый домен. Домена нет в `/etc/hosts`:
+  в headless-браузере использовать `--host-resolver-rules=MAP mastermp.loc 127.0.0.1`,
+  в curl — `--resolve mastermp.loc:443:127.0.0.1` (сертификат self-signed, нужен `-k`).
+- PHP выполняется в Docker-контейнере `mmp_php`: обёртка `/usr/bin/php` требует
+  `PHP_CONTAINER=mmp_php` (по умолчанию она ищет контейнер `php`). Команды
+  запускать как `PHP_CONTAINER=mmp_php bin/console ...`.
+- После изменения `assets/styles/app.css` пересобирать CSS:
+  `PHP_CONTAINER=mmp_php bin/console tailwind:build`.
 - Run the app with `symfony serve -d`, and commands with `symfony console ...`
   (or `bin/console` when the Symfony CLI isn't available).
 - When something fails, read `var/log/dev.log` and the web profiler
